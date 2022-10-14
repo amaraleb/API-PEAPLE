@@ -22,11 +22,13 @@ const login = (req, res) => {
                 })
             }
 
-            const token = jwt.sign({ name: user.name }, SECRET) //gera o token
-
+            const token = jwt.sign({ fname: user.fname }, SECRET) //gera o token
+            const id = user._id
+            console.log(id)
             res.status(200).send({ 
                 message: "Login autorizado",
-                token //escreve o token abaixo da mensagem
+                token, //escreve o token abaixo da mensagem
+                id
             })
         })
     } catch(e) {

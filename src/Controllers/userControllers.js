@@ -45,8 +45,42 @@ const createUser = async (req, res) => {
         })
     }
   }
+  const updateUserById = async (req, res) => {
+    const token = req.get('authorization') //busca o token 
+    
+  
+    if (!token) { //reporta erro caso não tenha token
+      return res.status(401).send("Erro no header")
+    }
+
+    jwt.verify(token, SECRET, (err) => { //compara o token com o secret
+        if(err) {
+            return res.status(401).send("Não autorizado");
+    }
+    })
+    try {
+        const findUser = await UserSchema.findById(req.params.id)
+
+        if (findUser) { 
+            findUser.bio = req.body.bio || findUser.bio         
+            findUser.fname = req.body.fname || findUser.fname
+            findUser.lname = req.body.lname || findUser.lname
+        }
+
+        const savedUser = await findUser.save()
+
+        res.status(200).json({
+            message: "Usuário atualizada com sucesso!",
+            savedUser
+        })
+
+    } catch (error) {
+        console.error(error)
+    }
+}
 
 module.exports = {
     getAll,
-    createUser
+    createUser,
+    updateUserById
 }
