@@ -5,17 +5,7 @@ const jwt = require ("jsonwebtoken")
 SECRET = process.env.SECRET;
 
 const getAll = async(req, res)=> {
-    const token = req.get('authorization') //busca o token 
-    
-  
-    if (!token) { //reporta erro caso não tenha token
-      return res.status(401).send("Erro no header")
-    }
 
-    jwt.verify(token, SECRET, (err) => { //compara o token com o secret
-        if(err) {
-            return res.status(401).send("Não autorizado");
-        } else { //se for igual ao secret entra no else e mostra os usuários
             UserSchema.find(function (err, users) {
                 if(err) {
                   res.status(500).send({ message: err.message })
@@ -23,8 +13,8 @@ const getAll = async(req, res)=> {
                   res.status(200).send(users)
             })
         }
-    })
-}
+    
+
 
 const createUser = async (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, 10) //transforma a senha em hash 
@@ -70,7 +60,7 @@ const createUser = async (req, res) => {
         const savedUser = await findUser.save()
 
         res.status(200).json({
-            message: "Usuário atualizada com sucesso!",
+            message: "Usuário atualizado com sucesso!",
             savedUser
         })
 
