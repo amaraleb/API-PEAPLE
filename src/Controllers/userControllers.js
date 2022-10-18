@@ -4,6 +4,8 @@ const jwt = require ("jsonwebtoken")
 
 SECRET = process.env.SECRET;
 
+var salt = bcrypt.genSaltSync(10);
+
 const getAll = async(req, res)=> {
 
             UserSchema.find(function (err, users) {
@@ -17,7 +19,7 @@ const getAll = async(req, res)=> {
 
 
 const createUser = async (req, res) => {
-    const hashedPassword = bcrypt.hashSync(req.body.password, 10) //transforma a senha em hash 
+    const hashedPassword = bcrypt.hashSync(req.body.password, salt) //transforma a senha em hash 
     req.body.password = hashedPassword //faz com que a senha seja salva no db hasherizada
   
     try {
