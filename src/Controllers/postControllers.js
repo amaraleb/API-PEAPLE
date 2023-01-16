@@ -16,24 +16,21 @@ const getAllPosts = async (req, res) => {
     //compara o token com o secret
     if (err) {
       return res.status(401).send("Não autorizado");
-    } 
-});
-      //se for igual ao secret entra no else e mostra os usuários
-      
-      //const user = ({userId: req.params.id})
-      //console.log(user);
-      PostSchema.find({userId: req.params.id},(err, posts) => {
+    }
+
+    //se for igual ao secret entra no else e mostra os usuários
+
+    //const user = ({userId: req.params.id})
+    //console.log(user);
+    else
+      PostSchema.find({ userId: req.params.id }, (err, posts) => {
         if (err) {
           res.status(500).send({ message: err.message });
         }
         res.status(200).send(posts);
         //console.log(posts)
-        
-        
-        
       });
-    
-
+  });
 };
 
 const createPost = async (req, res) => {
@@ -49,8 +46,8 @@ const createPost = async (req, res) => {
     if (err) {
       return res.status(401).send("Não autorizado");
     }
-  })
-  
+  });
+
   try {
     const body = req.body;
     const findUser = await UserSchema.findById(req.params.id);
